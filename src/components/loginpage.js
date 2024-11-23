@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import homielogo from "../brand/homie_logo.png";
+import { getFirestore, collection, query, where, getDocs } from "firebase/firestore"; // Import Firestore functions
 
 function Loginpage(props) {
   const navigate = useNavigate()
+  const db = getFirestore();
 
   const handleChangeCaseno = (event) => {
     props.setCaseno(event.target.value);
@@ -12,11 +14,36 @@ function Loginpage(props) {
     props.setUsertype(event.target.value);
   };
 
-  const handleLogin = () => {
-    // !!! CHECK THAT CASE NUMBER IS VAID
-    
-    navigate("/main")
+  const handleLogin = async () => {
+    try {
+      const caseno = props.caseno; // Case number entered by the user
+      if (!caseno) {
+        alert("Please enter a case number!");
+        return;
+      }
+  
+      const caseDocRef = collection(db, "input_for_financial");
+  
+      // Check if a document with the entered ID exists
+      const querySnapshot = await getDocs(query(caseDocRef, where("__name__", "==", caseno)));
+  
+      if (!querySnapshot.empty) {
+        // Document found
+        querySnapshot.forEach(doc => {
+          console.log("Document ID:", doc.id, "Document Data:", doc.data());
+        });
+        navigate("/main"); // Navigate to the main page
+      } else {
+        // No matching document
+        alert("Invalid case number! Please try again.");
+      }
+    } catch (error) {
+      console.error("Error checking case number:", error);
+      alert("An error occurred while checking the case number.");
+    }
   };
+  
+  
 
   return (
 <div style={{ padding: '200px', maxWidth: '400px', margin: 'auto', textAlign: 'center' }}>
