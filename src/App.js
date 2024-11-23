@@ -1,5 +1,5 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from './brand/homie_logo.png';
+import './css/App.css';
 
 function App() {
   return (
