@@ -28,7 +28,7 @@ function CircularCheckbox() {
                     style={{
                         width: "16px",
                         height: "16px",
-                        borderRadius: "50%", // Circle inside
+                        borderRadius: "50%",
                         backgroundColor: "white",
                     }}
                 />

@@ -1,4 +1,7 @@
+import React, { useState } from "react";
 import Card from "./Card";
+import CircularCheckbox from "./CheckBox"; 
+import CommonSpacer from "../Utils/Spacer";
 
 function BuyerCardStack() {
     const buyer_cards = [
@@ -8,18 +11,43 @@ function BuyerCardStack() {
         { id: 4, name: "Loan Approval" },
     ];
 
+    const [checkedCards, setCheckedCards] = useState({});
+
+    const toggleCheckbox = (id) => {
+        setCheckedCards((prevState) => ({
+            ...prevState,
+            [id]: !prevState[id],
+        }));
+    };
+
     return (
         <div
             style={{
-                fixedWidth: "200px",
+                width: "400px",
                 margin: "20px auto",
+                gap: "20px",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
             }}
         >
             {buyer_cards.map((card) => (
-                <Card key={card.id} name={card.name} />
+                <div
+                    key={card.id}
+                    style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        width: "100%",
+                    }}
+                >
+                    <CircularCheckbox
+                        isChecked={checkedCards[card.id] || false}
+                        toggleCheckbox={() => toggleCheckbox(card.id)}
+                    />
+                    <CommonSpacer width={"100px"} height={"100px"}/>
+                    <Card name={card.name} />
+                </div>
             ))}
         </div>
     );
