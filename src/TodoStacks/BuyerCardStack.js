@@ -4,6 +4,7 @@ import CircularCheckbox from "./CheckBox";
 import CommonSpacer from "../Utils/Spacer";
 
 function BuyerCardStack() {
+
     const buyer_cards = [
         { id: 1, name: "Mortgage Statement" },
         { id: 2, name: "Agreement Discussion" },
@@ -14,11 +15,16 @@ function BuyerCardStack() {
     const [checkedCards, setCheckedCards] = useState({});
 
     const toggleCheckbox = (id) => {
-        setCheckedCards((prevState) => ({
-            ...prevState,
-            [id]: !prevState[id],
-        }));
+        setCheckedCards((prevState) => {
+            const newState = {
+                ...prevState,
+                [id]: !prevState[id],
+            };
+            console.log(newState);
+            return newState;
+        });
     };
+    
 
     return (
         <div
@@ -31,24 +37,38 @@ function BuyerCardStack() {
                 alignItems: "center",
             }}
         >
-            {buyer_cards.map((card) => (
+            {buyer_cards.map((card) => {
+                const isChecked = checkedCards[card.id] || false; 
+
                 <div
-                    key={card.id}
-                    style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        width: "100%",
-                    }}
-                >
-                    <CircularCheckbox
-                        isChecked={checkedCards[card.id] || false}
-                        toggleCheckbox={() => toggleCheckbox(card.id)}
-                    />
-                    <CommonSpacer width={"100px"} height={"100px"}/>
-                    <Card name={card.name} />
-                </div>
-            ))}
+                style={{
+                    position: "absolute",
+                    left: "36.7%", 
+                    width: "10px",
+                    backgroundColor: "#021024",
+                    height: "calc(100% - 40px)", 
+                    top: "10px",  
+                }}
+            />
+                return (
+                    <div
+                        key={card.id}
+                        style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            width: "100%",
+                        }}
+                    >   
+                        <CircularCheckbox
+                            isChecked={isChecked}
+                            toggleCheckbox={() => toggleCheckbox(card.id)}
+                        />
+                        <CommonSpacer width={"100px"} height={"100px"}/>
+                        <Card name={card.name} highlight={isChecked} />
+                    </div>
+                );
+            })}
         </div>
     );
 }

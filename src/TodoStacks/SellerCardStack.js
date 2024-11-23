@@ -69,17 +69,6 @@ function SellerCardStack() {
                     </div>
                 );
             })}
-
-            {/* <div
-                style={{
-                    position: "absolute",
-                    left: "36.7%", 
-                    width: "10px",
-                    backgroundColor: "#021024",
-                    height: "calc(100% - 40px)", 
-                    top: "10px",  
-                }}
-            /> */}
         </div>
     );
 }
