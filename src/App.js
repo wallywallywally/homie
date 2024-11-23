@@ -2,7 +2,19 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Loginpage from './components/loginpage';
 import Homepage from './components/homepage';
 import Document from './components/document';
-import Yilin from './TodoStacks/yilin';
+import { db } from "./config/firebase";
+import { useEffect } from "react";
+
+import { 
+  collection, 
+  getDocs, 
+  addDoc, 
+  updateDoc, 
+  deleteDoc, 
+  doc 
+} from 'firebase/firestore';
+
+import SellerHomePage from './components/TodoStacks/yilin';
 
 import {useState} from 'react'
 
@@ -46,7 +58,7 @@ function App() {
         <Route
         path="/yilin" 
         element={        
-          <Yilin />
+          <SellerHomePage />
         } 
         />
       </Routes>
