@@ -1,9 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import logo from './brand/homie_logo.png';
 import Loginpage from './components/loginpage';
 import Homepage from './components/homepage';
-import Document from './components/filetypes/document';
-import Image from './components/filetypes/image';
+import Document from './components/document';
 import Yilin from './TodoStacks/yilin';
 
 import {useState} from 'react'
@@ -40,15 +38,6 @@ function App() {
         path="/document" 
         element={        
           <Document
-          caseno={caseno}
-          usertype={usertype}
-          />} 
-        />
-
-        <Route
-        path="/image" 
-        element={        
-          <Image
           caseno={caseno}
           usertype={usertype}
           />} 

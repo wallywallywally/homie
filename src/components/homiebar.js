@@ -8,7 +8,7 @@ function Homiebar() {
             <img
               src={homielogo}
               alt="Homie logo"
-              style={{ width:"10em", marginLeft:"1em", marginTop:"1em" }}
+              style={{ width:"10em", marginLeft:"1em", marginTop:"1em", marginBottom:"1em" }}
             />
           </div>
         </div>
