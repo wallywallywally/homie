@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import Card from "./Card";
 import CircularCheckbox from "./CheckBox"; 
-import CommonSpacer from "../Utils/Spacer";
+import CommonSpacer from "../../Utils/Spacer";
 
-function BuyerCardStack() {
+function SellerCardStack() {
 
-    const buyer_cards = [
+    const seller_cards = [
         { id: 1, name: "Mortgage Statement" },
         { id: 2, name: "Agreement Discussion" },
         { id: 3, name: "Offer Letter" },
-        { id: 4, name: "Loan Approval" },
+        { id: 4, name: "Escrow Process" },
     ];
 
     const [checkedCards, setCheckedCards] = useState({});
@@ -37,7 +37,7 @@ function BuyerCardStack() {
                 alignItems: "center",
             }}
         >
-            {buyer_cards.map((card) => {
+            {seller_cards.map((card) => {
                 const isChecked = checkedCards[card.id] || false; 
 
                 <div
@@ -73,4 +73,4 @@ function BuyerCardStack() {
     );
 }
 
-export default BuyerCardStack;
+export default SellerCardStack;
