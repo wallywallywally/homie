@@ -1,5 +1,6 @@
 import CardStack from './TodoStacks/CardStack';
 import Homiebar from './homiebar';
+import Document from './document';
 
 function Homepage() {
   const containerStyle = {
@@ -28,7 +29,7 @@ function Homepage() {
           <CardStack />
         </div>
         <div style={{flex:'1'}}>
-          <h1>hi</h1>
+          <Document />
         </div>
       </div>
     </div>

@@ -1,5 +1,4 @@
 import {useState} from 'react'
-import Homiebar from './homiebar';
 import '../css/centre.css';
 
 // either document or image -> fields
@@ -20,8 +19,6 @@ function Document(props) {
 
   return (
     <div>
-    <Homiebar />
-  
     <div className="centre">
       <h1 style={{fontSize:"3em"}}>{props.title} help</h1>
 
