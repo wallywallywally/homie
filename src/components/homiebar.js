@@ -5,11 +5,11 @@ function Homiebar() {
     position: "sticky",
     top: 0,
     backgroundColor: "white",
-    width: "1930px",
-    height: "100px",
+    width: "100vw",
+    height: "6em",
     boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
     zIndex: 10,
-    padding: "10px 20px",
+    gap: "100px",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
@@ -18,12 +18,11 @@ function Homiebar() {
   const logoContainerStyle = {
     display: "flex",
     alignItems: "center",
-    gap: "10px",
   };
 
   const logoStyle = {
     width: "8em", // Adjust logo size
-    marginLeft: "1em",
+    marginLeft: "2.5em"
   };
 
   return (

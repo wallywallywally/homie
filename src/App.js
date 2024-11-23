@@ -14,8 +14,6 @@ import {
   doc 
 } from 'firebase/firestore';
 
-import SellerHomePage from './components/TodoStacks/yilin';
-
 import {useState} from 'react'
 
 function App() {
@@ -44,22 +42,6 @@ function App() {
           caseno={caseno}
           usertype={usertype}
           />} 
-        />
-
-        <Route
-        path="/document" 
-        element={        
-          <Document
-          caseno={caseno}
-          usertype={usertype}
-          />} 
-        />
-
-        <Route
-        path="/yilin" 
-        element={        
-          <SellerHomePage />
-        } 
         />
       </Routes>
     </Router>

@@ -3,7 +3,7 @@ import Card from "./Card";
 import CircularCheckbox from "./CheckBox"; 
 import CommonSpacer from "../../Utils/Spacer";
 
-function BuyerCardStack() {
+function CardStack() {
 
     const buyer_cards = [
         { id: 1, name: "Mortgage Statement" },
@@ -30,8 +30,8 @@ function BuyerCardStack() {
         <div
             style={{
                 width: "500px",
-                margin: "20px auto",
-                gap: "20px",
+                margin: "1.5em auto",
+                gap: "1em",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -44,7 +44,7 @@ function BuyerCardStack() {
                 style={{
                     position: "absolute",
                     left: "36.7%", 
-                    width: "10px",
+                    width: "1000px",
                     backgroundColor: "#021024",
                     height: "calc(100% - 40px)", 
                     top: "10px",  
@@ -73,4 +73,4 @@ function BuyerCardStack() {
     );
 }
 
-export default BuyerCardStack;
+export default CardStack;
