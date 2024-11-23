@@ -1,6 +1,6 @@
 import {useState} from 'react'
 
-function Homepage() {
+function Document() {
 
   return (
     <div>
@@ -9,4 +9,4 @@ function Homepage() {
   );
 }
 
-export default Homepage;
+export default Document;

@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import homielogo from "../brand/homie_logo.png";
 
 function Loginpage(props) {
+  const navigate = useNavigate()
 
   const handleChangeCaseno = (event) => {
     props.setCaseno(event.target.value);
@@ -12,7 +14,7 @@ function Loginpage(props) {
 
   const handleLogin = () => {
     // !!! CHECK THAT CASE NUMBER IS VAID
-    props.setLogin(true);
+    navigate("/main")
   };
 
   return (

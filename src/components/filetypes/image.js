@@ -1,9 +1,8 @@
 import {useState} from 'react'
 
-function Homepage() {
+function Image() {
   const handleUpload = () => {
     // !!! INTERGRATION WITH DB
-    props.setLogin(true);
   };
 
   return (
@@ -26,4 +25,4 @@ function Homepage() {
   );
 }
 
-export default Homepage;
+export default Image;
