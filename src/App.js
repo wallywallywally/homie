@@ -4,6 +4,18 @@ import Loginpage from './components/loginpage';
 import Homepage from './components/homepage';
 import Document from './components/filetypes/document';
 import Image from './components/filetypes/image';
+import { db } from "./config/firebase";
+import { useEffect } from "react";
+
+import { 
+  collection, 
+  getDocs, 
+  addDoc, 
+  updateDoc, 
+  deleteDoc, 
+  doc 
+} from 'firebase/firestore';
+
 import SellerHomePage from './components/TodoStacks/yilin';
 
 import {useState} from 'react'

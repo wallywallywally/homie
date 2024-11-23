@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage"
+import { addDoc, collection } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: "YOUR_API_KEY",
@@ -11,7 +12,7 @@ const firebaseConfig = {
   appId: "YOUR_APP_ID",
 };
 
-const app = initalizeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 const storage = getStorage(app);
@@ -20,8 +21,7 @@ export { db, storage };
 
 //----
 
-import { addDoc, collection } from "firebase/firestore";
-import { db } from "./firebase"; // Ensure you've initialized Firebase and exported `db`
+
 
 async function addInputs_Offer_Letter(
   date1, seller_full_name1, seller_address1, buyer_full_name1, buyer_contact_information1,
