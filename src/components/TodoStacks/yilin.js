@@ -9,8 +9,8 @@ function SellerHomePage() {
   };
 
   const cardContainerStyle = {
-    marginLeft: '20px',
-  };
+    marginLeft: '-1300px',
+  }
 
   const barContainerStyle = {
     position: "sticky",
