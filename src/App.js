@@ -1,8 +1,8 @@
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import logo from './brand/homie_logo.png';
 import Loginpage from './components/loginpage';
 import Homepage from './components/homepage';
 import SellerCardStack from './TodoStacks/SellerCardStack';
-import './css/App.css';
 import {useState} from 'react'
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
   const [usertype, setUsertype] = useState("buyer")
 
   return (
-    <div className="App">
+    <div>
        {login ?
         <Homepage
         caseno={caseno}

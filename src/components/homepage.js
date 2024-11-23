@@ -1,11 +1,13 @@
 import {useState} from 'react'
+import Homiebar from './homiebar';
 
 function Homepage() {
 
-
   return (
-    <div className="App">
-      "asdsadawdasdsad"
+    <div>
+      <Homiebar />
+      
+      <h1>sdada</h1>
     </div>
   );
 }
