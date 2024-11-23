@@ -1,8 +1,9 @@
 import logo from './brand/homie_logo.png';
 import Loginpage from './components/loginpage';
 import Homepage from './components/homepage';
-
-import {useReducer, useState} from 'react'
+import SellerCardStack from './TodoStacks/SellerCardStack';
+import './css/App.css';
+import {useState} from 'react'
 
 function App() {
   const [login, setLogin] = useState(false)
