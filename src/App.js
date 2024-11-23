@@ -4,7 +4,7 @@ import Loginpage from './components/loginpage';
 import Homepage from './components/homepage';
 import Document from './components/filetypes/document';
 import Image from './components/filetypes/image';
-import Yilin from './TodoStacks/yilin';
+import SellerHomePage from './components/TodoStacks/yilin';
 
 import {useState} from 'react'
 
@@ -57,7 +57,7 @@ function App() {
         <Route
         path="/yilin" 
         element={        
-          <Yilin />
+          <SellerHomePage />
         } 
         />
       </Routes>
