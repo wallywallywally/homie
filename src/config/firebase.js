@@ -3,27 +3,35 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage"
 import { addDoc, collection } from "firebase/firestore";
 
+// Import the functions you need from the SDKs you need
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
+  apiKey: "AIzaSyABYMX5XFR_fVQCBHqpxlcWIWrmep8gWr8",
+  authDomain: "homie-c8711.firebaseapp.com",
+  projectId: "homie-c8711",
+  storageBucket: "homie-c8711.firebasestorage.app",
+  messagingSenderId: "260915466711",
+  appId: "1:260915466711:web:5c5dcef5a4159843ee7b92",
+  measurementId: "G-163E33J7V3"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
+const analytics = getAnalytics(app);
 const db = getFirestore(app);
-const storage = getStorage(app);
 
-export { db, storage };
-
+// Export Firestore instance
+export { db };
 //----
 
 
 
-async function addInputs_Offer_Letter(
+/*async function addInputs_Offer_Letter(
   date1, seller_full_name1, seller_address1, buyer_full_name1, buyer_contact_information1,
   buyer_address1, property_address1, offer_price1, deposit_amount1, number_of_days_loan1,
   financing_type1, loan_amount1, number_of_days_deposit1, closing_date1, possession_date1,
@@ -84,4 +92,4 @@ async function addInputs_Offer_Letter(
 
 
 
-export default addInputs_Offer_Letter;
+export default addInputs_Offer_Letter;*/
