@@ -1,20 +1,13 @@
 import {useState} from 'react'
 import '../css/centre.css';
 
-// either document or image -> fields
-
 // states
-// 1. doc type - document or image
-// 2. doc uploaded ?
+// 1. doc uploaded ?
 
 function Document(props) {
   // !!! INTERGRATION WITH DB
-  const handleUploadDocument = () => {
+  const handleUpload = () => {
 
-  };
-
-  const handleUploadImage = () => {
-    
   };
 
   return (
@@ -23,7 +16,7 @@ function Document(props) {
       <h1 style={{fontSize:"3em"}}>{props.title} help</h1>
 
       <button
-        onClick={props.type == "document" ? handleUploadDocument : handleUploadImage}
+        onClick={handleUpload}
         style={{
           padding: '1em 2em',
           backgroundColor: '#3d7faf',

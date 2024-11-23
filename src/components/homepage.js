@@ -2,7 +2,7 @@ import CardStack from './TodoStacks/CardStack';
 import Homiebar from './homiebar';
 import Document from './document';
 
-function Homepage() {
+function Homepage(props) {
   const containerStyle = {
     display: 'flex',
     flexDirection: 'column',
