@@ -23,7 +23,7 @@ function BuyerCardStack() {
     return (
         <div
             style={{
-                width: "400px",
+                width: "500px",
                 margin: "20px auto",
                 gap: "20px",
                 display: "flex",
