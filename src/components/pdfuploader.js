@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-//import { storage } from "../config/firebase"; // Ensure this matches your file path
-//import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const PDFUploader = ({ onUploadSuccess }) => {
   const [pdfFile, setPdfFile] = useState(null);

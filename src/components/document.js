@@ -1,13 +1,23 @@
 import PDFUploader from './pdfuploader';
 import { useState } from 'react';
+import '../css/centre.css'
 
 function Document(props) {
+   const [exists, setExists] = useState(true)
+   const checkExists = () => {
+     // checks DB if this form has been uploaded before
+   }
 
   return (
-    <div>
-      <h1>{props.selected} im going to kms</h1>
-
+    <div className='centre'>
+      <h1>{props.selected}</h1>
       <PDFUploader />
+
+      {exists &&
+
+      <h1>asdsa</h1>
+
+      }
     </div>
   );
 }
