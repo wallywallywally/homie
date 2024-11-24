@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Loginpage from './components/loginpage';
 import Homepage from './components/homepage';
-import Document from './components/document';
+import Document from './components/pdfuploader';
 import { db } from "./config/firebase";
 import { useEffect } from "react";
 
