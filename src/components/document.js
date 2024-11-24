@@ -1,112 +1,253 @@
-import React, { useState } from "react";
-//import { storage } from "../config/firebase"; // Ensure this matches your file path
-//import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import React, { useState, useEffect } from "react";
 
-const PDFUploader = ({ onUploadSuccess }) => {
-  const [pdfFile, setPdfFile] = useState(null);
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [isUploading, setIsUploading] = useState(false);
+const TaskFileUploader = ({ taskId }) => {
+  const [files, setFiles] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [error, setError] = useState("");
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file && file.type === "application/pdf") {
-      setPdfFile(file);
-    } else {
-      alert("Please select a valid PDF file.");
-    }
-  };
+  // Load existing files from the database on mount
+  useEffect(() => {
+    const taskData = JSON.parse(localStorage.getItem("tasksDatabase")) || {};
+    const storedFiles = taskData[taskId]?.files || [];
+    setFiles(storedFiles);
+  }, [taskId]);
 
-  /*const uploadPDF = async () => {
-    if (!pdfFile) {
-      alert("Please select a file first!");
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.type !== "application/pdf") {
+      setError("Please upload a valid PDF file.");
       return;
     }
-    setIsUploading(true);
 
-    const storageRef = ref(storage, `pdfs/${pdfFile.name}`);
-    try {
-      const snapshot = await uploadBytes(storageRef, pdfFile, {
-        contentType: "application/pdf",
-      });
+    setError("");
+    setSelectedFile(file);
+  };
 
-      // Get the download URL
-      const downloadURL = await getDownloadURL(snapshot.ref);
-      alert("Upload successful!");
-      setPdfFile(null);
-      setIsUploading(false);
-
-      // Pass the URL to the parent or save it somewhere
-      if (onUploadSuccess) {
-        onUploadSuccess(downloadURL);
-      }
-    } /*catch (error) {
-      console.error("Upload error:", error);
-      alert("An error occurred during upload.");
-      setIsUploading(false);
+  const uploadFile = () => {
+    if (!selectedFile) {
+      setError("Please select a file before uploading.");
+      return;
     }
-  };*/
 
-  return (
-    <div style={styles.uploaderContainer}>
-      <h2 style={styles.title}>Upload PDF</h2>
-      <input
-        type="file"
-        accept="application/pdf"
-        onChange={handleFileChange}
-        style={styles.fileInput}
-      />
-      {pdfFile && (
-        <p style={styles.fileName}>Selected File: {pdfFile.name}</p>
-      )}
-      <button
+    const reader = new FileReader();
+    reader.onload = () => {
+      const fileContent = reader.result;
 
-disabled={isUploading}
-        style={isUploading ? styles.disabledButton : styles.uploadButton}
-      >
-        {isUploading ? `Uploading... ${uploadProgress}%` : "Upload PDF"}
+      // Check for duplicate files
+      const isDuplicate = files.some(
+        (f) => f.name === selectedFile.name && f.content === fileContent
+      );
+      if (isDuplicate) {
+        setError("Duplicate file detected. Please upload a different file.");
+        return;
+      }
+
+      // Add the new file
+      const newFile = {
+        id: Date.now(), // Unique ID for file
+        name: selectedFile.name,
+        content: fileContent,
+        uploadedAt: new Date().toISOString(),
+      };
+
+      const updatedFiles = [...files, newFile];
+      setFiles(updatedFiles);
+
+      // Update the "database"
+      updateDatabase(updatedFiles);
+
+      setSelectedFile(null);
+      setError("");
+    };
+    reader.readAsDataURL(selectedFile);
+  };
+
+  const deleteFile = (fileId) => {
+    const updatedFiles = files.filter((file) => file.id !== fileId);
+    setFiles(updatedFiles);
+
+    // Update the "database"
+    updateDatabase(updatedFiles);
+  };
+
+  const deleteAllFiles = () => {
+    setFiles([]);
+
+    // Clear files from the "database"
+    updateDatabase([]);
+  };
+
+  const updateDatabase = (updatedFiles) => {
+    const taskData = JSON.parse(localStorage.getItem("tasksDatabase")) || {};
+
+    // Update specific task with the new file list
+    taskData[taskId] = { files: updatedFiles };
+
+    // Save to localStorage
+    localStorage.setItem("tasksDatabase", JSON.stringify(taskData));
+  };
+
+  const downloadFile = (file) => {
+    const link = document.createElement("a");
+    link.href = file.content;
+    link.download = file.name;
+    link.click();
+  };
+return (
+  <div style={styles.uploaderContainer}>
+    <h2 style={styles.title}>Task File Uploader</h2>
+    <input
+      type="file"
+      accept="application/pdf"
+      onChange={handleFileChange}
+      style={styles.fileInput}
+    />
+    {selectedFile && (
+      <p style={styles.fileName}>Selected File: {selectedFile.name}</p>
+    )}
+    {error && <p style={styles.errorMessage}>{error}</p>}
+    <button
+      onClick={uploadFile}
+      style={selectedFile ? styles.uploadButton : styles.disabledButton}
+      disabled={!selectedFile}
+    >
+      Upload File
+    </button>
+    <h3 style={styles.subtitle}>Uploaded Files</h3>
+    <ul style={styles.fileList}>
+      {files.map((file) => (
+        <li key={file.id} style={styles.fileItem}>
+          <div>
+            <strong>{file.name}</strong> <br />
+            <small>
+              Uploaded: {new Date(file.uploadedAt).toLocaleString()}
+            </small>
+          </div>
+          <div style={styles.fileActions}>
+            <button
+              onClick={() => downloadFile(file)}
+              style={styles.downloadButton}
+            >
+              Download
+            </button>
+            <button
+              onClick={() => deleteFile(file.id)}
+              style={styles.deleteButton}
+            >
+              Delete
+            </button>
+          </div>
+        </li>
+      ))}
+    </ul>
+    {files.length > 0 && (
+      <button onClick={deleteAllFiles} style={styles.deleteAllButton}>
+        Delete All Files
       </button>
-    </div>
-  );
+    )}
+  </div>
+);
 };
 
 const styles = {
-  uploaderContainer: {
-    textAlign: "center",
-    padding: "20px",
-    border: "1px solid #ddd",
-    borderRadius: "8px",
-    maxWidth: "400px",
-    margin: "20px auto",
-    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
-  },
-  title: {
-    color: "#4CAF50",
-    marginBottom: "15px",
-  },
-  fileInput: {
-    display: "block",
-    margin: "10px auto",
-  },
-  fileName: {
-    fontSize: "14px",
-    color: "#555",
-    marginTop: "10px",
-  },
-  uploadButton: {
-    padding: "10px 20px",
-    backgroundColor: "#4CAF50",
-    color: "white",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
-  disabledButton: {
-    padding: "10px 20px",
-    backgroundColor: "#ccc",
-    color: "white",
-    border: "none",
-    borderRadius: "4px",
-  },
+uploaderContainer: {
+  textAlign: "center",
+  padding: "20px",
+  border: "1px solid #ddd",
+  borderRadius: "8px",
+  maxWidth: "500px",
+  margin: "20px auto",
+  boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
+  backgroundColor: "#f9f9f9",
+},
+title: {
+  color: "#4CAF50",
+  fontSize: "24px",
+  marginBottom: "15px",
+},
+fileInput: {
+  display: "block",
+  margin: "10px auto 15px",
+},
+fileName: {
+  fontSize: "16px",
+  color: "#555",
+  marginBottom: "10px",
+},
+errorMessage: {
+  color: "red",
+  fontSize: "14px",
+  marginBottom: "10px",
+},
+uploadButton: {
+  padding: "10px 20px",
+  backgroundColor: "#4CAF50",
+  color: "white",
+  border: "none",
+  borderRadius: "4px",
+  cursor: "pointer",
+  marginBottom: "20px",
+},
+disabledButton: {
+  padding: "10px 20px",
+  backgroundColor: "#ccc",
+  color: "white",
+  border: "none",
+  borderRadius: "4px",
+  cursor: "not-allowed",
+  marginBottom: "20px",
+},
+subtitle: {
+  fontSize: "20px",
+  color: "#333",
+  margin: "20px 0 10px",
+},
+fileList: {
+  listStyleType: "none",
+  padding: 0,
+},
+fileItem: {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  padding: "10px",
+  marginBottom: "10px",
+  backgroundColor: "#fff",
+  border: "1px solid #ddd",
+  borderRadius: "4px",
+  boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+},
+fileActions: {
+  display: "flex",
+  gap: "10px",
+},
+downloadButton: {
+  padding: "5px 10px",
+  backgroundColor: "#007BFF",
+  color: "white",
+  border: "none",
+  borderRadius: "4px",
+  cursor: "pointer",
+},
+deleteButton: {
+  padding: "5px 10px",
+  backgroundColor: "#FF5252",
+  color: "white",
+  border: "none",
+  borderRadius: "4px",
+  cursor: "pointer",
+},
+deleteAllButton: {
+  marginTop: "15px",
+  padding: "10px 20px",
+  backgroundColor: "#FF5252",
+  color: "white",
+  border: "none",
+  borderRadius: "4px",
+  cursor: "pointer",
+},
 };
 
-export default PDFUploader;
+export default TaskFileUploader;

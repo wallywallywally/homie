@@ -3,74 +3,58 @@ import Card from "./Card";
 import CircularCheckbox from "./CheckBox"; 
 import CommonSpacer from "../../Utils/Spacer";
 
-function CardStack() {
+function CardStack({ onTaskSelect }) {
+  const buyer_cards = [
+    { id: 1, name: "Mortgage Statement" },
+    { id: 2, name: "Agreement Discussion" },
+    { id: 3, name: "Offer Letter" },
+    { id: 4, name: "Loan Approval" },
+  ];
 
-    const buyer_cards = [
-        { id: 1, name: "Mortgage Statement" },
-        { id: 2, name: "Agreement Discussion" },
-        { id: 3, name: "Offer Letter" },
-        { id: 4, name: "Loan Approval" },
-    ];
+  const [checkedCards, setCheckedCards] = useState({});
+  const toggleCheckbox = (id) => {
+    setCheckedCards((prevState) => ({
+      ...prevState,
+      [id]: !prevState[id],
+    }));
+  };
 
-    const [checkedCards, setCheckedCards] = useState({});
-
-    const toggleCheckbox = (id) => {
-        setCheckedCards((prevState) => {
-            const newState = {
-                ...prevState,
-                [id]: !prevState[id],
-            };
-            console.log(newState);
-            return newState;
-        });
-    };
-    
-
-    return (
-        <div
+  return (
+    <div
+      style={{
+        width: "500px",
+        margin: "1.5em auto",
+        gap: "1em",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      {buyer_cards.map((card) => {
+        const isChecked = checkedCards[card.id] || false;
+        return (
+          <div
+            key={card.id}
             style={{
-                width: "500px",
-                margin: "1.5em auto",
-                gap: "1em",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+              cursor: "pointer",
             }}
-        >
-            {buyer_cards.map((card) => {
-                const isChecked = checkedCards[card.id] || false; 
-
-                <div
-                style={{
-                    position: "absolute",
-                    left: "36.7%", 
-                    width: "1000px",
-                    backgroundColor: "#021024",
-                    height: "calc(100% - 40px)", 
-                    top: "10px",  
-                }}
+            onClick={() => onTaskSelect(card.id)}
+          >
+            <CircularCheckbox
+              isChecked={isChecked}
+              toggleCheckbox={() => toggleCheckbox(card.id)}
             />
-                return (
-                    <div
-                        key={card.id}
-                        style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            width: "100%",
-                        }}
-                    >   
-                        <CircularCheckbox
-                            isChecked={isChecked}
-                            toggleCheckbox={() => toggleCheckbox(card.id)}
-                        />
-                        <CommonSpacer width={"100px"} height={"100px"}/>
-                        <Card name={card.name} highlight={isChecked} />
-                    </div>
-                );
-            })}
-        </div>
-    );
+            <CommonSpacer width={"100px"} height={"100px"} />
+            <Card name={card.name} highlight={isChecked} />
+          </div>
+        );
+      })}
+    </div>
+  );
 }
 
 export default CardStack;
