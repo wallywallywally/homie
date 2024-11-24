@@ -1,28 +1,40 @@
 import {useState} from 'react'
+import '../css/centre.css';
 
-function Image() {
+// states
+// 1. doc uploaded ?
+
+function Document(props) {
+  // !!! INTERGRATION WITH DB
   const handleUpload = () => {
-    // !!! INTERGRATION WITH DB
+
   };
 
   return (
     <div>
+    <div className="centre">
+      <h1 style={{fontSize:"3em"}}>{props.title} help</h1>
+
       <button
         onClick={handleUpload}
         style={{
-          padding: '10px 20px',
+          padding: '1em 2em',
           backgroundColor: '#3d7faf',
           color: 'white',
           border: 'none',
           borderRadius: '5px',
           cursor: 'pointer',
-          fontFamily: 'Teachers'
+          fontFamily: 'Teachers',
+          fontSize: '1.2em'
         }}
-      >
+        >
         Upload
       </button>
+
+      
+    </div>
     </div>
   );
 }
 
-export default Image;
+export default Document;

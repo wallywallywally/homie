@@ -14,7 +14,7 @@ function Loginpage(props) {
     props.setUsertype(event.target.value);
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     try {
       const caseno = props.caseno; // Case number entered by the user
       if (!caseno) {
@@ -22,18 +22,19 @@ function Loginpage(props) {
         return;
       }
   
-      // Reference to the Firestore collection where case numbers are stored
-      const caseCollection = collection(db, "caseNumbers");
+      const caseDocRef = collection(db, "input_for_financial");
   
-      // Query to check if the case number exists
-      const q = query(caseCollection, where("caseno", "==", caseno));
-      const querySnapshot = getDocs(q);
+      // Check if a document with the entered ID exists
+      const querySnapshot = await getDocs(query(caseDocRef, where("__name__", "==", caseno)));
   
       if (!querySnapshot.empty) {
-        // Case number exists
-        navigate("/main");
+        // Document found
+        querySnapshot.forEach(doc => {
+          console.log("Document ID:", doc.id, "Document Data:", doc.data());
+        });
+        navigate("/main"); // Navigate to the main page
       } else {
-        // Case number does not exist
+        // No matching document
         alert("Invalid case number! Please try again.");
       }
     } catch (error) {
@@ -41,6 +42,7 @@ function Loginpage(props) {
       alert("An error occurred while checking the case number.");
     }
   };
+  
   
 
   return (
