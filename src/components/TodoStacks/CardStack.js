@@ -3,10 +3,10 @@ import Card from "./Card";
 import CircularCheckbox from "./CheckBox"; 
 import CommonSpacer from "../../Utils/Spacer";
 
-function CardStack({ onTaskSelect }) {
+function CardStack({ onTaskSelect, setSummed }) {
   const buyer_cards = [
     { id: 1, name: "Mortgage Statement" },
-    { id: 2, name: "Agreement Discussion" },
+    { id: 2, name: "Sales Agreement" },
     { id: 3, name: "Offer Letter" },
     { id: 4, name: "Loan Approval" },
   ];
@@ -42,7 +42,10 @@ function CardStack({ onTaskSelect }) {
               width: "100%",
               cursor: "pointer",
             }}
-            onClick={() => onTaskSelect(card.id)}
+            onClick={() => {
+              onTaskSelect(card.id)
+              setSummed(false)
+            }}
           >
             <CircularCheckbox
               isChecked={isChecked}

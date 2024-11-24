@@ -5,6 +5,7 @@ import TaskFileUploader from "./document";
 
 function Homepage(props) {
   const [selectedTask, setSelectedTask] = useState(null);
+  const [summed, setSummed] = useState(false);
 
   const containerStyle = {
     display: "flex",
@@ -19,6 +20,12 @@ function Homepage(props) {
     backgroundColor: "white",
   };
 
+  const rightSticky = {
+    position: "sticky",
+    top: 0,
+    flex: 1,
+  };
+
   return (
     <div>
       <div style={barContainerStyle}>
@@ -28,12 +35,12 @@ function Homepage(props) {
         <div style={{ display: "flex" }}>
           {/* Pass the task selection handler */}
           <div>
-            <CardStack onTaskSelect={setSelectedTask} />
+            <CardStack onTaskSelect={setSelectedTask} setSummed={setSummed} />
           </div>
-          <div style={{ flex: "1" }}>
+          <div style={rightSticky}>
             {/* Show uploader box dynamically */}
             {selectedTask ? (
-              <TaskFileUploader taskId={selectedTask} />
+              <TaskFileUploader taskId={selectedTask} summed={summed} setSummed={setSummed}/>
             ) : (
               <p style={{ textAlign: "center", marginTop: "2em" }}>
                 Select a task to view the uploader
