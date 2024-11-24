@@ -29,7 +29,7 @@ function Homepage(props) {
           <CardStack />
         </div>
         <div style={{flex:'1'}}>
-          <Document />
+          <Document caseno={props.caseno}/>
         </div>
       </div>
     </div>
