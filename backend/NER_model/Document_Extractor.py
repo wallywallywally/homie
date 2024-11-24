@@ -1,14 +1,86 @@
 import re
+import nltk
 import pdfplumber
 
-# File path to the uploaded PDF
 file_path = "Dummy_Mortgage_Pre_Approval.pdf"
+
+def ner_extractor(file_path):
+    nltk.download('punkt')
+    nltk.download('maxent_ne_chunker')
+    nltk.download('words')
+
+    def extract_text_from_pdf(pdf_path):
+        with pdfplumber.open(pdf_path) as pdf:
+            text = ""
+            for page in pdf.pages:
+                text += page.extract_text()
+        return text
+    
+    def enhanced_preprocess_text(raw_text):
+        text = re.sub(r'(?<=:)(?=[^\s])', ' ', raw_text)
+        text = re.sub(r'(?<=[a-z])(?=[A-Z])', ' ', text)
+        text = re.sub(r'(?<=[0-9])(?=[A-Za-z])', ' ', text)
+        text = re.sub(r'\n+', ' ', text)
+        text = re.sub(r'\s+', ' ', text)
+        text = re.sub(r'([a-zA-Z])([0-9])', r'\1 \2', text)
+        return text
+    
+    def extract_named_entities(text):
+        named_entities = []
+        words = nltk.word_tokenize(text)
+        tagged = nltk.pos_tag(words)
+        chunked = nltk.ne_chunk(tagged)
+        
+        for chunk in chunked:
+            if isinstance(chunk, nltk.Tree): 
+                entity_name = " ".join([word for word, tag in chunk])
+                entity_type = chunk.label()
+                named_entities.append((entity_name, entity_type))
+        return named_entities
+    
+    def extract_mortgage_terms(text):
+        terms = {
+            "Loan Amount": None,
+            "Loan Type": None,
+            "Interest Rate": None,
+            "Loan Term": None,
+            "Down Payment": None,
+            "Validity Date": None,  
+        }
+
+        loan_amount_match = re.search(r"\$\d{1,3}(?:,\d{3})*(?:\.\d{2})?", text) 
+        loan_type_match = re.search(r"Loan Type\s*[:\-]?\s*(.*?)(?=\n|$)", text)
+        interest_rate_match = re.search(r"\d+\.\d+%", text)  
+        loan_term_match = re.search(r"\d+\s*years?\s*(fixed)?", text)  
+        down_payment_match = re.search(r"\$\d{1,3}(?:,\d{3})*(?:\.\d{2})?", text)
+
+        terms["Loan Amount"] = loan_amount_match.group(0) if loan_amount_match else "Not Found"
+        terms["Loan Type"] = loan_type_match.group(1) if loan_type_match else "Not Found"
+        terms["Interest Rate"] = interest_rate_match.group(0) if interest_rate_match else "Not Found"
+        terms["Loan Term"] = loan_term_match.group(0) if loan_term_match else "Not Found"
+        terms["Down Payment"] = down_payment_match.group(0) if down_payment_match else "Not Found"
+        return terms
+    
+    text = extract_text_from_pdf(file_path)
+    fully_normalized_text = enhanced_preprocess_text(text)
+    mortgage_terms = extract_mortgage_terms(fully_normalized_text)
+    named_entities = extract_named_entities(fully_normalized_text)
+
+    validity_date = "Not Found"
+    for entity, entity_type in named_entities:
+        if entity_type == "GPE" and "valid until" in entity:
+            validity_date = entity
+    mortgage_terms["Validity Date"] = validity_date
+    mortgage_terms["Named Entities"] = named_entities
+
+    return mortgage_terms
+
 
 def extract_loan_details(file_path):
     def enhanced_preprocess_text(raw_text):
         text = re.sub(r'(?<=:)(?=[^\s])', ' ', raw_text)  
         text = re.sub(r'(?<=[a-z])(?=[A-Z])', ' ', text)  
-        text = re.sub(r'(?<=[0-9])(?=[A-Za-z])', ' ', text)  
+        text = re.sub(r'(?<=[0-9])(?=[A-Za-z])', ' ', text) 
         text = re.sub(r'\n+', ' ', text) 
         text = re.sub(r'\s+', ' ', text) 
         return text
@@ -50,14 +122,24 @@ def extract_loan_details(file_path):
     down_payment = simplify_value("Down Payment", down_payment)
 
     return {
-        "Loan Amount": loan_amount,
         "Loan Type": loan_type,
-        "Interest Rate": interest_rate,
         "Loan Term": loan_term,
         "Down Payment": down_payment,
     }
 
-loan_details = extract_loan_details(file_path)
-for key, value in loan_details.items():
-    print(f"{key}: {value}")
+if __name__ == "__main__":
 
+    loan_details = extract_loan_details(file_path)
+    ner_details = ner_extractor(file_path)
+
+    combined_details = {
+        "Loan Amount": ner_details["Loan Amount"],
+        "Loan Type": loan_details["Loan Type"],
+        "Interest Rate": ner_details["Interest Rate"],
+        "Loan Term": loan_details["Loan Term"],
+        "Down Payment": loan_details["Down Payment"],
+    }
+
+    print("\n--- Mortgage Pre-Approval Details ---")
+    for term, value in combined_details.items():
+        print(f"{term}: {value}")
