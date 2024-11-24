@@ -3,15 +3,16 @@ import Card from "./Card";
 import CircularCheckbox from "./CheckBox"; 
 import CommonSpacer from "../../Utils/Spacer";
 
-function CardStack() {
+function CardStack(props) {
 
-    const buyer_cards = [
+    const cards = [
         { id: 1, name: "Mortgage Statement" },
         { id: 2, name: "Agreement Discussion" },
         { id: 3, name: "Offer Letter" },
         { id: 4, name: "Loan Approval" },
     ];
 
+    // To-do list progress
     const [checkedCards, setCheckedCards] = useState({});
 
     const toggleCheckbox = (id) => {
@@ -25,7 +26,6 @@ function CardStack() {
         });
     };
     
-
     return (
         <div
             style={{
@@ -37,7 +37,7 @@ function CardStack() {
                 alignItems: "center",
             }}
         >
-            {buyer_cards.map((card) => {
+            {cards.map((card) => {
                 const isChecked = checkedCards[card.id] || false; 
 
                 <div
@@ -65,7 +65,7 @@ function CardStack() {
                             toggleCheckbox={() => toggleCheckbox(card.id)}
                         />
                         <CommonSpacer width={"100px"} height={"100px"}/>
-                        <Card name={card.name} highlight={isChecked} />
+                        <Card name={card.name} highlight={isChecked} setSelected={props.setSelected} />
                     </div>
                 );
             })}

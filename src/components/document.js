@@ -5,7 +5,13 @@ import '../css/centre.css';
 // 1. doc uploaded ?
 
 function Document(props) {
+  const [exists, setExists] = useState(null)
   // !!! INTERGRATION WITH DB
+  const checkExists = () => {
+    // check if the DB has the props.selected doc
+    // if true, setExists = true / else false
+  }
+
   const handleUpload = () => {
 
   };
@@ -13,7 +19,7 @@ function Document(props) {
   return (
     <div>
     <div className="centre">
-      <h1 style={{fontSize:"3em"}}>{props.title} help</h1>
+      <h1 style={{fontSize:"3em"}}>{props.selected}</h1>
 
       <button
         onClick={handleUpload}

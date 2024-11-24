@@ -1,8 +1,11 @@
 import CardStack from './TodoStacks/CardStack';
 import Homiebar from './homiebar';
 import Document from './document';
+import { useState } from 'react';
 
 function Homepage(props) {
+  const [selected, setSelected] = useState(null)
+
   const containerStyle = {
     display: 'flex',
     flexDirection: 'column',
@@ -26,10 +29,17 @@ function Homepage(props) {
     <div style={containerStyle}>
       <div style={{display:"flex"}}>
         <div>
-          <CardStack />
+          <CardStack 
+          setSelected={setSelected}
+          />
         </div>
-        <div style={{flex:'1'}}>
-          <Document />
+        <div style={{flex:'1', position:'sticky',top:'0'}}>
+          {selected &&
+          <Document 
+          caseno={props.caseno}
+          selected={selected}
+          />
+          }
         </div>
       </div>
     </div>
