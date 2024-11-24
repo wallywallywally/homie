@@ -59,7 +59,8 @@ const PDFUploader = ({ onUploadSuccess }) => {
         <p style={styles.fileName}>Selected File: {pdfFile.name}</p>
       )}
       <button
-        disabled={isUploading}
+
+disabled={isUploading}
         style={isUploading ? styles.disabledButton : styles.uploadButton}
       >
         {isUploading ? `Uploading... ${uploadProgress}%` : "Upload PDF"}
