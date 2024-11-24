@@ -1,11 +1,22 @@
 # Make open ai to summarise chunk of text
 import openai
 import os
-from homie.backend.secretkey import apikey
+import pdfplumber
+from secretkey import apikey
 
 os.environ['OPENAI_API_KEY'] = apikey 
 
-def default_chat_completion(text):
+def extract_text_from_pdf(pdf_path):
+        with pdfplumber.open(pdf_path) as pdf:
+            text = ""
+            for page in pdf.pages:
+                text += page.extract_text()
+        return text
+
+def default_chat_completion():
+    filepath = "NER_model/Dummy_Mortgage_Pre_Approval.pdf"
+    text = extract_text_from_pdf(filepath)
+
     messages = [
         {"role": "system", "content": "You are a housing chatbot specialised in helping people understand housing contracts. "
                                        "Always summarise in a concise manner and easy to understand. "}
@@ -41,5 +52,5 @@ if __name__ == "__main__":
 
 12.The landlord shall retain the original of this agreement and the tenant shall retain its duplicate.
 """
-    res = default_chat_completion(text)
+    res = default_chat_completion()
     print(res)
