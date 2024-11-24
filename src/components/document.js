@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import '../css/centre.css'
 
 const TaskFileUploader = ({ taskId }) => {
   const [files, setFiles] = useState([]);
@@ -95,7 +96,23 @@ const TaskFileUploader = ({ taskId }) => {
     link.download = file.name;
     link.click();
   };
+
+  // Summariser things
+  const [text, setText] = useState("");
+
+  const handleChangeText = (e) => {
+    setText(e.target.value);
+  };
+
+  const handleSummarise = () => {
+    // summarise
+  }
+
+
+
 return (
+  <div>
+  <h1 className="centre">{taskId}</h1>
   <div style={styles.uploaderContainer}>
     <h2 style={styles.title}>Task File Uploader</h2>
     <input
@@ -147,6 +164,39 @@ return (
         Delete All Files
       </button>
     )}
+  </div>
+  <div className="centre">
+  <h1>Summariser</h1>
+  <textarea
+        value={text}
+        onChange={handleChangeText}
+        placeholder="Enter content to summarise"
+        rows="10" // Controls height of the box
+        style={{
+          width: "60%", // Makes the textarea full width
+          padding: "10px",
+          fontSize: "16px",
+          borderRadius: "4px",
+          border: "1px solid #ccc",
+        }}
+      />
+      <br />
+      <button
+        onClick={handleSummarise}
+        style={{
+          marginTop: "10px",
+          padding: "10px 20px",
+          fontSize: "16px",
+          color: "white",
+          backgroundColor: "#007bff",
+          border: "none",
+          borderRadius: "4px",
+          cursor: "pointer",
+        }}
+      >
+        Submit
+      </button>
+      </div>
   </div>
 );
 };
