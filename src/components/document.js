@@ -6,6 +6,14 @@ const TaskFileUploader = ({ taskId }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [error, setError] = useState("");
 
+  // Title dict
+  const doctypes = {
+    "1":"Mortgage Statement",
+    "2":"Agreement Discussion",
+    "3":"Offer Letter",
+    "4":"Loan Approval",
+  }
+
   // Load existing files from the database on mount
   useEffect(() => {
     const taskData = JSON.parse(localStorage.getItem("tasksDatabase")) || {};
@@ -112,7 +120,7 @@ const TaskFileUploader = ({ taskId }) => {
 
 return (
   <div>
-  <h1 className="centre">{taskId}</h1>
+  <h1 className="centre">{doctypes[taskId]}</h1>
   <div style={styles.uploaderContainer}>
     <h2 style={styles.title}>Task File Uploader</h2>
     <input
